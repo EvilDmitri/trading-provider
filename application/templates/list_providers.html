@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block style_block %}
+    <style type="text/css">
+        table.table { width: 60%; }
+    </style>
+{% endblock %}
+
+{% block content %}
+
+    <h1 id="">Providers List</h1>
+    <div>&nbsp;</div>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>TradingName</th>
+                <th>PhoneNumber</th>
+                <th>PostCode</th>
+                <th colspan="2">&nbsp;&nbsp;</th>
+
+            </tr>
+        </thead>
+        <tbody>
+
+            {% for provider in providers %}
+            {% set provider_id = provider.key.id() %}
+                <tr>
+                    <td>{{ provider.trading_name }}</td>
+                    <td>{{ provider.phone_number }}</td>
+                    <td>{{ provider.post_code }}</td>
+                    <td>
+                        <a href="{{ url_for('edit_provider', provider_id=provider_id) }}" class="btn bt-xs">Edit</a>
+                    </td>
+                    <td>
+                        <form method="post" action="{{ url_for('delete_provider', provider_id=provider_id) }}">
+                            <button class="btn btn-sm">Delete</button>
+                        </form>
+                    </td>
+
+                </tr>
+
+            {% else %}
+                <tr><td colspan="7">No providers yet</td></tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+    <p>
+
+        <a class="btn btn-primary" data-toggle="modal" href="/add">
+            <i class="icon-plus-sign icon-white"></i>
+            New provider
+        </a>
+
+    </p>
+
+    {% include 'new_provider.html' %} {# pull in new_provider form (modal dialog) #}
+
+{% endblock content %}
+
+{% block tail_script %}
+    <script>
+        var FormHelpers = {
+            validate: function (form, evt) {
+                // Form validation for modal dialog
+                var trading_name = form.find('#trading_name').val();
+                var phone_number = form.find('#phone_number').val();
+                var post_code = form.find('#post_code').val();
+                if (!(trading_name)) {
+                    evt.preventDefault();
+                    Utils.renderFieldErrorTooltip('#trading_name', 'Trading Name is required', 'right');
+                }
+                if (!(phone_number)) {
+                    evt.preventDefault();
+                    Utils.renderFieldErrorTooltip('#phone_number', 'Phone Number is required', 'right');
+                }
+                if (!(post_code)) {
+                    evt.preventDefault();
+                    Utils.renderFieldErrorTooltip('#post_code', 'Post Code is required', 'right');
+                }
+            },
+            init: function () {
+                var self = this;
+                var provider_form = $('#new-provider-form');
+                provider_form.on('submit', function (evt) {
+                    self.validate(provider_form, evt)
+                });
+            }
+        };
+        $(document).ready(function() {
+            FormHelpers.init();
+        });
+    </script>
+{% endblock tail_script %}

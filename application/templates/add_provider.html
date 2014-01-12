@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h3>Add Provider</h3>
+    <form id="new-provider-form" class="well form-horizontal"
+            action="{{ url_for('add_provider') }}" method="post" accept-charset="utf-8">
+            <fieldset>
+                {{ form.hidden_tag() }}
+
+                <div class="control-group">
+                    <div class="control-label">{{ form.trading_name.label }}</div>
+                    <div class="controls">
+                        {{ form.trading_name|safe }}
+                        {% if form.trading_name.errors %}
+                        <ul class="errors">
+                            {% for error in form.trading_name.errors %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="control-label">{{ form.phone_number.label }}</div>
+                    <div class="controls">
+                        {{ form.phone_number|safe }}
+                        {% if form.phone_number.errors %}
+                        <ul class="errors">
+                            {% for error in form.phone_number.errors %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                </div>
+
+
+                <div class="control-group">
+                    <div class="control-label">{{ form.post_code.label }}</div>
+                    <div class="controls">
+                        {{ form.post_code|safe }}
+                        {% if form.post_code.errors %}
+                        <ul class="errors">
+                            {% for error in form.post_code.errors %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                </div>
+
+
+                <div class="control-group">
+                    <div class="controls">
+                        <input class="btn btn-primary" type="submit" value="Add provider"/>
+                        <a class="btn cancel" href="{{ url_for('list_providers') }}">Cancel</a>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+{% endblock content %}

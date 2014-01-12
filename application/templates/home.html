@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block style_block %}
+
+{% endblock %}
+
+{% block content %}
+    <p>
+        <a class="btn btn-primary" data-target="providers" href="/providers">
+            <i class="icon-list icon-white"></i>
+            List Providers
+        </a>
+    </p>
+
+    <p>
+        <a class="btn btn-primary" data-toggle="modal" href="/add">
+            <i class="icon-plus-sign icon-white"></i>
+            Add provider
+        </a>
+    </p>
+
+    {% include 'new_provider.html' %} {# pull in new_provider form (modal dialog) #}
+
+{% endblock content %}
+
+{% block tail_script %}
+    <script>
+        var FormHelpers = {
+            validate: function (form, evt) {
+                // Form validation for modal dialog
+                var trading_name = form.find('#trading_name').val();
+                var phone_number = form.find('#phone_number').val();
+                var post_code = form.find('#post_code').val();
+                if (!(trading_name)) {
+                    evt.preventDefault();
+                    Utils.renderFieldErrorTooltip('#trading_name', 'Trading Name is required', 'right');
+                }
+                if (!(phone_number)) {
+                    evt.preventDefault();
+                    Utils.renderFieldErrorTooltip('#phone_number', 'Phone number is required', 'right');
+                }
+                if (!(post_code)) {
+                    evt.preventDefault();
+                    Utils.renderFieldErrorTooltip('#post_code', 'Post code is required', 'right');
+                }
+            },
+            init: function () {
+                var self = this;
+                var provider_form = $('#new-provider-form');
+                provider_form.on('submit', function (evt) {
+                    self.validate(provider_form, evt)
+                });
+            }
+        };
+        $(document).ready(function() {
+            FormHelpers.init();
+        });
+    </script>
+{% endblock tail_script %}
